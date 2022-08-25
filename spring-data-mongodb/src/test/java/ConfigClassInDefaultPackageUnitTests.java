@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 
+import example.Comment;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Unit test for {@link ConfigClassInDefaultPackage}.
@@ -25,8 +30,19 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class ConfigClassInDefaultPackageUnitTests {
 
+	@Resource
+	private MongoTemplate mongoTemplate;
+
 	@Test // DATAMONGO-877
 	public void loadsConfigClassFromDefaultPackage() {
 		new AnnotationConfigApplicationContext(ConfigClassInDefaultPackage.class).close();
+	}
+
+	@Test
+	public void test1() {
+//		mongoTemplate.updateFirst();
+		List<Comment> all = mongoTemplate.findAll(Comment.class, mongoTemplate.getCollectionName(Comment.class));
+
+		System.out.println(all);
 	}
 }
